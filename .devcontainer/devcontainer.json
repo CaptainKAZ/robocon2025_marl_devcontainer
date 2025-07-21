@@ -1,0 +1,32 @@
+{
+	"name": "BenchMARL Dev Container",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	// 转发端口以便在本地访问容器内的服务
+	"forwardPorts": [8080],
+	// 在容器创建后运行的命令
+	// 在此处添加你希望在容器中安装的 VS Code 扩展
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"google.geminicodeassist"
+			]
+		}
+	},
+	"runArgs": [
+		"--gpus=all"
+	],
+	"postCreateCommand": "pip install -e BenchMARL && pip install -e VectorizedMultiAgentSimulator",
+	"remoteUser": "vscode",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"nodeGypDependencies": true,
+			"installYarnUsingApt": true,
+			"version": "lts",
+			"pnpmVersion": "latest",
+			"nvmVersion": "latest"
+		}
+	}
+}
