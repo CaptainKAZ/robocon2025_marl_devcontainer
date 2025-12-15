@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:2.7.1-cuda12.8-cudnn9-runtime
+FROM pytorch/pytorch:2.9.1-cuda13.0-cudnn9-runtime
 
 # 设置环境变量
 ENV DEBIAN_FRONTEND=noninteractive

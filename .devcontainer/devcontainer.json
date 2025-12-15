@@ -20,6 +20,7 @@
 	],
 	"postCreateCommand": "pip install -e BenchMARL && pip install -e VectorizedMultiAgentSimulator",
 	"remoteUser": "vscode",
+	"updateRemoteUserUID": true,
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"nodeGypDependencies": true,
