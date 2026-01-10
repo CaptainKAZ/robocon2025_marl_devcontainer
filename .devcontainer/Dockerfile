@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:2.9.1-cuda13.0-cudnn9-runtime
+FROM pytorch/pytorch:2.9.1-cuda13.0-cudnn9-devel
 
 # 设置环境变量
 ENV DEBIAN_FRONTEND=noninteractive
@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     python3-opengl \
     libfreetype6-dev \
     libfontconfig1-dev \
+    libegl1 libgl1 libgl1-mesa-glx libgles2 \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置区域设置
@@ -48,4 +49,5 @@ USER $USERNAME
 # 设置工作目录
 WORKDIR /home/$USERNAME/workspace
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
-    pip install wandb moviepy==1.0.3 tensorboard imageio requests matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install gymnasium wandb moviepy==1.0.3 tensorboard imageio requests matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple && \
+    pip install mamba-ssm[causal-conv1d] --no-build-isolation 
