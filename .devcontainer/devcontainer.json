@@ -17,7 +17,8 @@
 		}
 	},
 	"runArgs": [
-		"--gpus=all"
+		"--gpus=all",
+		"--shm-size=8gb"
 	],
 	"postCreateCommand": "pip install -e BenchMARL && pip install -e VectorizedMultiAgentSimulator",
 	"remoteUser": "vscode",
