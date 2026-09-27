@@ -48,6 +48,12 @@ USER $USERNAME
 
 # 设置工作目录
 WORKDIR /home/$USERNAME/workspace
-RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
-    pip install gymnasium wandb moviepy==1.0.3 tensorboard imageio requests matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple && \
-    pip install mamba-ssm[causal-conv1d] --no-build-isolation 
+# 注意: 清华 PyPI 镜像当前会返回 403, 使用与 apt 一致的南科大镜像
+RUN pip config set global.index-url https://mirrors.sustech.edu.cn/pypi/simple/ && \
+    pip install gymnasium wandb moviepy==1.0.3 tensorboard imageio requests matplotlib \
+        -i https://mirrors.sustech.edu.cn/pypi/simple/
+
+# 注意: mamba-ssm 需要现场编译 CUDA 扩展，构建非常慢且容易失败。
+# 当前训练使用的是 Attention + GRU 模型，且 benchmarl/models/mamba.py 对 mamba_ssm 是延迟导入，
+# 因此默认跳过安装，不影响训练。若确实要用 Mamba 模型，请手动取消下面一行的注释。
+# RUN pip install mamba-ssm[causal-conv1d] --no-build-isolation 

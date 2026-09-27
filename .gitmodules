@@ -4,3 +4,6 @@
 [submodule "BenchMARL"]
 	path = BenchMARL
 	url = https://github.com/CaptainKAZ/BenchMARL.git
+[submodule "on-policy"]
+	path = on-policy
+	url = https://github.com/marlbenchmark/on-policy.git
