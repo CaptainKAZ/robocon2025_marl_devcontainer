@@ -43,15 +43,19 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(ALL\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# 切换到非 root 用户
-USER $USERNAME
-
 # 设置工作目录
 WORKDIR /home/$USERNAME/workspace
-# 注意: 清华 PyPI 镜像当前会返回 403, 使用与 apt 一致的南科大镜像
+
+# 注意: 本项目在 rootless Docker 下以 root 用户运行(容器 root 映射到宿主用户),
+# 因此通用依赖必须安装到系统 site-packages。若在 USER vscode 之后安装, 包会落到
+# /home/vscode/.local, 而容器内的 root 看不到它们 (tensorboard/wandb/moviepy 等)。
+# 清华 PyPI 镜像当前会返回 403, 使用与 apt 一致的南科大镜像。
 RUN pip config set global.index-url https://mirrors.sustech.edu.cn/pypi/simple/ && \
     pip install gymnasium wandb moviepy==1.0.3 tensorboard imageio requests matplotlib \
         -i https://mirrors.sustech.edu.cn/pypi/simple/
+
+# 切换到非 root 用户 (devcontainer 默认用户)
+USER $USERNAME
 
 # 注意: mamba-ssm 需要现场编译 CUDA 扩展，构建非常慢且容易失败。
 # 当前训练使用的是 Attention + GRU 模型，且 benchmarl/models/mamba.py 对 mamba_ssm 是延迟导入，
