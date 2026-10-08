@@ -1,0 +1,18 @@
+# ── 本地敏感/临时 ──────────────────────────────
+.passwd
+nohup.out
+
+# ── Python ────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+
+# ── .opencode/ 的运行产物（脚本本身要提交）─────
+.opencode/*.log
+.opencode/*.txt
+.opencode/*.json
+.opencode/*.png
+.opencode/__pycache__/
+
+# ── 媒体产物（GIF/截图要提交，原始 mp4 不要）──
+docs/assets/*.mp4

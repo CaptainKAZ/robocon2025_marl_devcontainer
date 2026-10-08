@@ -50,8 +50,14 @@ WORKDIR /home/$USERNAME/workspace
 # 因此通用依赖必须安装到系统 site-packages。若在 USER vscode 之后安装, 包会落到
 # /home/vscode/.local, 而容器内的 root 看不到它们 (tensorboard/wandb/moviepy 等)。
 # 清华 PyPI 镜像当前会返回 403, 使用与 apt 一致的南科大镜像。
+# torch / torchvision / numpy 由基础镜像 (pytorch 2.9.1 + cu130) 提供, 不在此声明以免被重装。
+# torchrl~=0.8.0 会带入 tensordict / omegaconf 等; pyglet/gym/six/gym-notices 是 VMAS 的运行依赖。
+# 本地源码包 (BenchMARL / VectorizedMultiAgentSimulator) 在构建时不存在 (仓库是运行时 bind mount),
+# 由 .opencode/start_container.sh 在容器启动后 `pip install -e` 幂等补装。
 RUN pip config set global.index-url https://mirrors.sustech.edu.cn/pypi/simple/ && \
     pip install gymnasium wandb moviepy==1.0.3 tensorboard imageio requests matplotlib \
+                "torchrl~=0.8.0" tqdm hydra-core "av<14" \
+                "pyglet<=1.5.27" gym six "gym-notices==0.0.8" \
         -i https://mirrors.sustech.edu.cn/pypi/simple/
 
 # 切换到非 root 用户 (devcontainer 默认用户)

@@ -16,6 +16,7 @@
 		}
 	},
 	"runArgs": [
+		"--privileged",
 		"--gpus=all",
 		"--shm-size=8gb"
 	],
